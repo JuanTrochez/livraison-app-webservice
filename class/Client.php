@@ -82,6 +82,42 @@ class Client {
     {
         return $this->email;
     }
+    
+    public static function getClientByLivraison($bdd, $livraisonId) {
+        
+        $query = $bdd->prepare("SELECT * "
+                . "FROM client "
+                . "WHERE livraison_id = :livraison_id "
+                . "LIMIT 1");
+        
+        $query->execute(array(
+            ":livraison_id"   => $livraisonId
+        ));
+        
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        
+        return $result;
+        
+    }
+    
+    public static function getClientById($bdd, $id) {
+        
+        $query = $bdd->prepare("SELECT * "
+                . "FROM client "
+                . "WHERE id = :id "
+                . "LIMIT 1");
+        
+        $query->execute(array(
+            ":id"   => $id
+        ));
+        
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+//        var_dump($result);exit;
+        
+        return $result;
+        
+    }
+    
 
     function __destruct()
     {

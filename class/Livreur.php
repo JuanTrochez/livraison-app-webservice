@@ -63,7 +63,30 @@ class Livreur {
         return $this->prenom;
     }
     
-    public function connect() {
+    public function connect($bdd, $login, $pwd) {
+        $return = array(
+            "valide" => false,
+        );
+        
+        $query = $bdd->prepare("SELECT * FROM livreur "
+                . "WHERE login = :login "
+                . "AND password = :password "
+                . "LIMIT 1");
+        
+        $query->execute(array(
+            ":login" => $login,
+            "password" => $pwd
+        ));
+        
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        
+        if ($result) {
+            $return['valide'] = true;
+            $return['user'] = $result;
+        }
+//        var_dump($result);exit;
+        
+        return $return;
     }
 
     function __destruct()

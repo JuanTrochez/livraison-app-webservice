@@ -1,6 +1,12 @@
 <?php
     include_once 'function/bdd.php';
     include_once 'function/utils.php';
+    
+    include_once 'class/Client.php';
+    include_once 'class/Livraison.php';
+    include_once 'class/Livreur.php';
+    include_once 'class/Produit.php';
+    
     include_once 'function/geo.php';
     
     $lat1 = 48.8459535;

@@ -63,6 +63,21 @@ class Produit {
         return $this->commentaire;
     }
     
+    public static function getProduitByLivraison($bdd, $livraisonId) {
+        
+        $query = $bdd->prepare("SELECT * "
+                . "FROM produit "
+                . "WHERE livraison_id = :livraison_id ");
+        
+        $query->execute(array(
+            ":livraison_id"   => $livraisonId
+        ));
+        
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        
+        return $result;
+        
+    }
 
     function __destruct()
     {

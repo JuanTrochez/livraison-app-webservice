@@ -23,19 +23,14 @@ $lastDaysLivraison = $livraison->getLastDaysLivraisonByLivreur($bdd, $idLivreur)
 //var_dump($return['livraison']);
 
 
+//echo 'before sort';exit;
+$allLivraisons = Geolocation::sortArrayByDistances($bdd, $lastDaysLivraison, $dayLivraison, $posLat, $posLng);
 
-$allLivraisons = Geolocation::sortArrayByDistances($lastDaysLivraison, $dayLivraison, $posLat, $posLng);
-$return['data']['livraisons'] = $allLivraisons;
-
-
-//var_dump($return);
-
-
-//var_dump($dayLivraison);
-//var_dump($lastDaysLivraison);
-
-//$distances = Geolocation::GetDrivingDistance($lat1, $lat2, $long1, $long2);
-//var_dump($distances);
+if ($allLivraisons['valide']) {    
+    $return['data']['livraisons'] = $allLivraisons['livraison'];
+    $return['infos']['valide'] = true;
+    $return['infos']['message'] = "Livraisons successfully added";
+} 
 
 
 echo json_encode(utf8ize($return), JSON_UNESCAPED_UNICODE);

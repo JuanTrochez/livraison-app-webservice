@@ -1,4 +1,6 @@
 <?php
+//include_once 'Client.php';
+//include_once 'Produit.php';
 
 class Livraison {
     //put your code here
@@ -107,7 +109,7 @@ class Livraison {
             ":livreur_id"   => $idLivreur
         ));
         
-        $result = $query->fetchAll();
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
         
         return $result;
     }
@@ -123,7 +125,16 @@ class Livraison {
             ":livreur_id"   => $idLivreur
         ));
         
-        $result = $query->fetchAll();
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        
+        return $result;
+    }
+    
+    public static function getDetailLivraison($bdd, $livraisonId) {
+        $result = array();
+        
+        $result['client'] = Client::getClientById($bdd, $livraisonId);
+        $result['produits'] = Produit::getProduitByLivraison($bdd, $livraisonId);
         
         return $result;
     }
