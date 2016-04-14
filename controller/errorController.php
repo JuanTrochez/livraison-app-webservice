@@ -3,9 +3,9 @@
 header('Content-Type: application/json');
 $return = array();
 $return['data'] = array();
-$return['hello'] = 'hi';
 
 $return['infos']['valid'] = false;
+$return['infos']['data'] = 'error';
 $return['infos']['message'] = 'Error: Request not found';
 
 
