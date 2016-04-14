@@ -99,7 +99,26 @@ class Livraison {
     public function getDailyLivraisonByLivreur($bdd, $idLivreur) {
         $query = $bdd->prepare("SELECT * FROM livraison "
                 . "WHERE livreur_id = :livreur_id "
-                . "AND DATE(date)=CURDATE()");
+                . "AND DATE(date) = CURDATE() "
+                . "AND statut = 0 "
+                . "ORDER BY id ASC");
+        
+        $query->execute(array(
+            ":livreur_id"   => $idLivreur
+        ));
+        
+        $result = $query->fetchAll();
+        
+        return $result;
+    }
+    
+    public function getLastDaysLivraisonByLivreur($bdd, $idLivreur) {
+        $query = $bdd->prepare("SELECT * FROM livraison "
+                . "WHERE livreur_id = :livreur_id "
+                . "AND DATE(date) < CURDATE() "
+                . "AND statut = 0 "
+                . "ORDER BY id ASC");
+        
         $query->execute(array(
             ":livreur_id"   => $idLivreur
         ));

@@ -2,12 +2,44 @@
 
 class Geolocation {
     
-    public static function sortArrayByDistances($array, $posLat, $posLng) {
-        $result = array();
-        foreach ($array as $value) {
-            $this->GetDrivingDistance($posLat, $array['latitude'], $posLng, $array['longitude']);            
-            
+    public static function sortArrayByDistances($lastDaysLivraison, $dayLivraison, $posLat, $posLng) {
+        $result = array(
+            "currentTime" => 0
+        );
+        $maxTime = 28800;//8h en secondes
+        
+        if (count($lastDaysLivraison)) {
+            foreach ($lastDaysLivraison as $value) {
+                //on verifie que le temps ne depasse pas les 8h avant l'ajout de la livraison
+                $result['currentTime'] += $value['duration'];
+                if ($result['currentTime'] > $maxTime) {
+                    $result['currentTime'] -= $value['duration'];
+                    break;
+                }
+                
+                $distance = Geolocation::GetDrivingDistance($posLat, $value['latitude'], $posLng, $value['longitude']);
+                $value['distance'] = $distance['distance'];
+                $value['time'] = $distance['time'];
+                
+                $result['livraisons'][] = $value;
+            }            
         }
+        
+        //on gère les livraisons du jour si la liste n'a pas encore depassé les 8h
+        if ($result['currentTime'] < $maxTime) {
+            while ($result['currentTime'] < $maxTime) {
+                foreach ($dayLivraison as $value) {
+                    
+                    $distance = Geolocation::GetDrivingDistance($posLat, $value['latitude'], $posLng, $value['longitude']);
+                    $value['distance'] = $distance['distance'];
+                    $value['time'] = $distance['time'];
+                    $result['livraisons'][] = $value;
+                    
+                    $result['currentTime'] += $value['duration'];
+                }
+            }
+        }
+        
     }
     
     function array_sort($array, $on, $order=SORT_ASC)    {
@@ -46,7 +78,6 @@ class Geolocation {
     
     //retourne la distance en metre et le temps en seconde entre chaque coordonnees
     public static function GetDrivingDistance($lat1, $lat2, $long1, $long2) {
-        
         $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=".$lat1.",".$long1."&destinations=".$lat2.",".$long2."&mode=driving&language=fr-FR";
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);

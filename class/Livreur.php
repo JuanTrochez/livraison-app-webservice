@@ -63,6 +63,8 @@ class Livreur {
         return $this->prenom;
     }
     
+    public function connect() {
+    }
 
     function __destruct()
     {

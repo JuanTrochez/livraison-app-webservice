@@ -1,9 +1,18 @@
 <?php
 
-
 header('Content-Type: application/json');
+$return = array();
+$return['data'] = array();
+$return['hello'] = 'hi';
 
-$data = ['valid' => false, 'message' => 'Error: Request not found'];
+$return['infos']['valid'] = false;
+$return['infos']['message'] = 'Error: Request not found';
 
 
-echo json_encode($data);
+if (isset($_GET['test']) && !empty($_GET['test'])) {
+    $return['data']['test'] = 'Izi money';
+}
+
+
+
+echo json_encode($return);

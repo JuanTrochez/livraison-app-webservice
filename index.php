@@ -1,7 +1,7 @@
 <?php
     include_once 'function/bdd.php';
+    include_once 'function/utils.php';
     include_once 'function/geo.php';
-    
     
     $lat1 = 48.8459535;
     $long1 = 2.354859;
@@ -9,7 +9,6 @@
     $lat2 = 48.8404955;
     $long2 = 2.2560035;
     
-//    var_dump(Geolocation::GetDrivingDistance($lat1, $lat2, $long1, $long2));exit;
 
     $basePath = "http://" . $_SERVER["SERVER_NAME"] . "/livraison-app-webservice/";
 
