@@ -1,7 +1,5 @@
 <?php
 
-include_once '/class/Livreur.php';
-
 header('Content-Type: application/json');
 
 $return = array();
@@ -30,7 +28,8 @@ if (isset($_GET['token']) && !empty($_GET['token'])) {
         $logged = $livreur->connect($bdd, $array[0], $array[1]);
         if ($logged['valide']) {
             $return['infos']['valide'] = true;
-            $return['data']['user'] = $logged['user'];
+            $return['data'] = $logged['user'];
+            $return['data']['token'] = $_GET['token'];
         }
     }
 
