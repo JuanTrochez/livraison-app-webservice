@@ -21,7 +21,7 @@ class Geolocation {
                 $value['detail'] = Livraison::getDetailLivraison($bdd, $value['client_id']);
                 
                 $distance = Geolocation::GetDrivingDistance($posLat, $value['latitude'], $posLng, $value['longitude']);
-                $value['distance'] = $distance['distance'];
+                $value['distance'] = $distance['distanceText'];
                 $value['time'] = $distance['time'];
                 
                 $result['livraison']['priority'][] = $value;
@@ -42,29 +42,29 @@ class Geolocation {
                     $value['detail'] = Livraison::getDetailLivraison($bdd, $value['client_id']);
                     
                     $distance = Geolocation::GetDrivingDistance($posLat, $value['latitude'], $posLng, $value['longitude']);
-                    $value['distance'] = $distance['distance'];
+                    $value['distance'] = $distance['distanceText'];
                     $value['time'] = $distance['time'];
                     $result['livraison']['day'][] = $value;
                 }
         }
         
         //on gère les livraisons du jour si la liste n'a pas encore depassé les 8h
-        foreach ($dayLivraison as $value) {
-
-            //on verifie que le temps ne depasse pas les 8h avant l'ajout de la livraison
-            $result['currentTime'] += $value['duration'];
-            if ($result['currentTime'] > $maxTime) {
-                $result['currentTime'] -= $value['duration'];
-                break;
-            }
-
-            $value['detail'] = Livraison::getDetailLivraison($bdd, $value['client_id']);
-
-            $distance = Geolocation::GetDrivingDistance($posLat, $value['latitude'], $posLng, $value['longitude']);
-            $value['distance'] = $distance['distance'];
-            $value['time'] = $distance['time'];
-            $result['livraison']['day'][] = $value;
-        }
+//        foreach ($dayLivraison as $value) {
+//
+//            //on verifie que le temps ne depasse pas les 8h avant l'ajout de la livraison
+//            $result['currentTime'] += $value['duration'];
+//            if ($result['currentTime'] > $maxTime) {
+//                $result['currentTime'] -= $value['duration'];
+//                break;
+//            }
+//
+//            $value['detail'] = Livraison::getDetailLivraison($bdd, $value['client_id']);
+//
+//            $distance = Geolocation::GetDrivingDistance($posLat, $value['latitude'], $posLng, $value['longitude']);
+//            $value['distance'] = $distance['distance'];
+//            $value['time'] = $distance['time'];
+//            $result['livraison']['day'][] = $value;
+//        }
         
         $result['livraison']['day'] = Geolocation::array_sort($result['livraison']['day'], 'distance', SORT_ASC);
         $result['valide'] = true;

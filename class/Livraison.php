@@ -138,6 +138,34 @@ class Livraison {
         
         return $result;
     }
+    
+    public function getLivraisonById($bdd, $id) {
+        
+        $query = $bdd->prepare("SELECT * "
+                . "FROM livraison "
+                . "WHERE id = :id ");
+        
+        $query->execute(array(
+            ":id"   => $id
+        ));
+        
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        
+        return $result;        
+    } 
+    
+    public function updateLivraisonStatutById($bdd, $id, $statut) {
+        $query = $bdd->prepare("UPDATE livraison "
+                . "SET statut = :statut "
+                . "WHERE id = :livraison_id ");
+        
+        $query->execute(array(
+            ":livraison_id"   => $id,
+            ":statut" => $statut
+        ));
+        
+        return $result;
+    }
 
     function __destruct()
     {

@@ -78,6 +78,38 @@ class Produit {
         return $result;
         
     }
+    
+    public function updateProduitById($bdd, $id, $commentaire, $statut) {
+        $query = $bdd->prepare("UPDATE produit "
+                . "SET commentaire = :commentaire, "
+                . "statut = :statut"
+                . "WHERE livraison_id = :livraison_id ");
+        
+        $query->execute(array(
+            ":commentaire" => $commentaire,
+            ":statut" => $statut,
+            ":livraison_id"   => $livraisonId
+        ));
+        
+        return $result;
+        
+    }
+    
+    public function getProduitById($bdd, $id) {
+        
+        $query = $bdd->prepare("SELECT * "
+                . "FROM produit "
+                . "WHERE id = :id ");
+        
+        $query->execute(array(
+            ":id"   => $id
+        ));
+        
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        
+        return $result;
+        
+    } 
 
     function __destruct()
     {
